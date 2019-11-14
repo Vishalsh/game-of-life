@@ -2,8 +2,6 @@ import Cell from "./Cell";
 
 class Grid {
     constructor(rows, columns) {
-        this.rows = rows;
-        this.columns = columns;
         this.cells = this.createCells(rows, columns);
     }
 
@@ -11,7 +9,7 @@ class Grid {
         const cells = {};
         for (let row = 0; row < rows; row++) {
             for (let column = 0; column < columns; column++) {
-                cells[`${row}${column}`] = new Cell(row, column, false);
+                cells[`r${row}c${column}`] = new Cell(row, column, false);
             }
         }
         return cells;
@@ -24,14 +22,14 @@ class Grid {
     getNeighboursFor(cell) {
         const {row, column} = cell;
         return [
-            this.cells[`${row - 1}${column - 1}`],
-            this.cells[`${row - 1}${column}`],
-            this.cells[`${row - 1}${column + 1}`],
-            this.cells[`${row}${column - 1}`],
-            this.cells[`${row}${column + 1}`],
-            this.cells[`${row + 1}${column - 1}`],
-            this.cells[`${row + 1}${column}`],
-            this.cells[`${row + 1}${column + 1}`]
+            this.cells[`r${row - 1}c${column - 1}`],
+            this.cells[`r${row - 1}c${column}`],
+            this.cells[`r${row - 1}c${column + 1}`],
+            this.cells[`r${row}c${column - 1}`],
+            this.cells[`r${row}c${column + 1}`],
+            this.cells[`r${row + 1}c${column - 1}`],
+            this.cells[`r${row + 1}c${column}`],
+            this.cells[`r${row + 1}c${column + 1}`]
         ].filter(cell => cell);
     }
 
@@ -68,7 +66,7 @@ class Grid {
     }
 
     toggleCellState = ({row, column}) => {
-        this.cells[`${row}${column}`].alive = !this.cells[`${row}${column}`].alive;
+        this.cells[`r${row}c${column}`].alive = !this.cells[`r${row}c${column}`].alive;
     };
 }
 
