@@ -1,22 +1,24 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Cell from '../Cell/Cell';
 
 import './Grid.css';
 
-const Grid = ({grid, onClickCell}) => {
+const Grid = ({grid, columns, onClickCell}) => {
     return (
         <div>
             {
-                grid.map((row, rowIndex) => (
-                    <div key={`row${rowIndex}`} className="grid-row">
-                        {
-                            row.map((cell) => {
-                                const {row, column} = cell;
-                                return <Cell key={`cell${row}${column}`} cell={cell} onClick={onClickCell}/>
-                            })
-                        }
-                    </div>
-                ))
+                grid.map(cell => {
+                    const {row, column} = cell;
+                    return (
+                        <Fragment key={`cell${row}${column}`}>
+                            <Cell cell={cell}
+                                  onClick={onClickCell}/>
+                            {
+                                (column === columns - 1) && <br/>
+                            }
+                        </Fragment>
+                    )
+                })
             }
         </div>
     )

@@ -4,8 +4,13 @@
   border: 1px solid gray;
   display: inline-block;
   margin-left: -1px;
+  margin-top: -4px;
 }
 
 .alive {
   background: black;
+}
+
+.row-ends {
+  display: block;
 }

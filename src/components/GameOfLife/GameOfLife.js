@@ -10,13 +10,24 @@ class GameOfLife extends Component {
         super(props);
         this.state = {
             grid: [],
-            showGrid: false
+            showGrid: false,
+            rows: 0,
+            columns: 0
         };
     }
 
+    onChange = (event) => {
+        const {target} = event;
+        this.setState({
+            [target.name]: parseInt(target.value)
+        });
+    };
+
     onSubmit = (e) => {
+        const {rows, columns} = this.state;
+
         e.preventDefault();
-        this.grid = new Grid(parseInt(this.rows.value), parseInt(this.columns.value));
+        this.grid = new Grid(rows, columns);
         this.setState({
             grid: this.grid.getCells(),
             showGrid: true
@@ -46,25 +57,23 @@ class GameOfLife extends Component {
     };
 
     render() {
-        const {showGrid, grid} = this.state;
+        const {showGrid, grid, rows, columns} = this.state;
 
         return (
             <div className="game-of-life">
                 {
                     showGrid ?
-                        <div className="grid-container">
-                            <GridComponent grid={grid} onClickCell={this.toggleCellState}/>
+                        <>
+                            <GridComponent grid={Object.values(grid)}
+                                           columns={columns}
+                                           onClickCell={this.toggleCellState}/>
                             <button onClick={this.hideGrid}>close</button>
                             <button onClick={this.startGameOfLife}>Start</button>
-                        </div>
+                        </>
                         :
                         <form onSubmit={this.onSubmit}>
-                            <input ref={(input) => {
-                                this.rows = input
-                            }}/>
-                            <input ref={(input) => {
-                                this.columns = input
-                            }}/>
+                            <input name="rows" value={rows} onChange={this.onChange}/>
+                            <input name="columns" value={columns} onChange={this.onChange}/>
                             <button>Create Grid</button>
                         </form>
                 }

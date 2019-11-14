@@ -18,11 +18,7 @@ class Grid {
     };
 
     getCells() {
-        return Object.values(this.cells).reduce((cellArray, cell) => {
-            const {row, column} = cell;
-            cellArray[row][column] = cell;
-            return cellArray;
-        }, [...Array(this.rows).keys()].map(item => []));
+        return this.cells;
     }
 
     getNeighboursFor(cell) {
