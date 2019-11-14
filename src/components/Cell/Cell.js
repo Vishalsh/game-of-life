@@ -2,9 +2,9 @@ import React from 'react';
 
 import './Cell.css';
 
-const Cell = ({alive}) => {
+const Cell = ({cell, onClick}) => {
     return (
-        <div className={`cell ${alive ? 'alive' : 'dead'}`}/>
+        <div className={`cell ${cell.alive ? 'alive' : 'dead'}`} onClick={() => onClick(cell)}/>
     )
 };
 

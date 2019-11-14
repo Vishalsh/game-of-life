@@ -3,37 +3,72 @@ import React, {Component} from 'react';
 import GridComponent from '../Grid/Grid';
 import Grid from '../../models/Grid';
 
-export const gridState = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0]
-];
-
 class GameOfLife extends Component {
-    grid = new Grid(gridState);
+    grid;
 
     constructor(props) {
         super(props);
         this.state = {
-            grid: this.grid.getCells()
+            grid: [],
+            showGrid: false
         };
     }
 
-    componentDidMount() {
+    onSubmit = (e) => {
+        e.preventDefault();
+        this.grid = new Grid(parseInt(this.rows.value), parseInt(this.columns.value));
+        this.setState({
+            grid: this.grid.getCells(),
+            showGrid: true
+        })
+    };
+
+    hideGrid = () => {
+        this.setState({
+            showGrid: false
+        });
+    };
+
+    toggleCellState = (cell) => {
+        this.grid.toggleCellState(cell);
+        this.setState({
+            grid: this.grid.getCells()
+        })
+    };
+
+    startGameOfLife = () => {
         setInterval(() => {
             this.grid.calculateNextState();
             this.setState({
                 grid: this.grid.getCells()
             })
         }, 500);
-    }
+    };
 
     render() {
+        const {showGrid, grid} = this.state;
+
         return (
             <div className="game-of-life">
-                <GridComponent grid={this.state.grid}/>
+                {
+                    showGrid ?
+                        <div className="grid-container">
+                            <GridComponent grid={grid} onClickCell={this.toggleCellState}/>
+                            <button onClick={this.hideGrid}>close</button>
+                            <button onClick={this.startGameOfLife}>Start</button>
+                        </div>
+                        :
+                        <form onSubmit={this.onSubmit}>
+                            <input ref={(input) => {
+                                this.rows = input
+                            }}/>
+                            <input ref={(input) => {
+                                this.columns = input
+                            }}/>
+                            <button>Create Grid</button>
+                        </form>
+                }
+
             </div>
         )
     }

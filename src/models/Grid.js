@@ -1,26 +1,28 @@
 import Cell from "./Cell";
 
 class Grid {
-    constructor(gridState) {
-        this.cells = this.initializeCells(gridState)
+    constructor(rows, columns) {
+        this.rows = rows;
+        this.columns = columns;
+        this.cells = this.createCells(rows, columns);
     }
 
-    initializeCells(gridState) {
-        return gridState.reduce((rowMap, row, rowIndex) => ({
-            ...rowMap,
-            ...row.reduce((cellMap, cell, columnIndex) => ({
-                ...cellMap,
-                [`${rowIndex}${columnIndex}`]: new Cell(rowIndex, columnIndex, cell === 1)
-            }), {})
-        }), {});
-    }
+    createCells = (rows, columns) => {
+        const cells = {};
+        for (let row = 0; row < rows; row++) {
+            for (let column = 0; column < columns; column++) {
+                cells[`${row}${column}`] = new Cell(row, column, false);
+            }
+        }
+        return cells;
+    };
 
     getCells() {
         return Object.values(this.cells).reduce((cellArray, cell) => {
             const {row, column} = cell;
             cellArray[row][column] = cell;
             return cellArray;
-        }, [[], [], [], [], []]);
+        }, [...Array(this.rows).keys()].map(item => []));
     }
 
     getNeighboursFor(cell) {
@@ -68,6 +70,10 @@ class Grid {
             }
         }, {})
     }
+
+    toggleCellState = ({row, column}) => {
+        this.cells[`${row}${column}`].alive = !this.cells[`${row}${column}`].alive;
+    };
 }
 
 export default Grid;
